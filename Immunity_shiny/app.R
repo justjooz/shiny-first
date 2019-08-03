@@ -7,6 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
+
 library(shiny)
 
 # Define UI for application that draws a histogram
@@ -14,16 +15,23 @@ ui <- fluidPage(
     sliderInput(inputId = "num",
                 label = "choose a number",
                 value = 25, min = 1, max = 100),
-    plotOutput("hist")
+    plotOutput("hist"),
+    verbatimTextOutput("stats")
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-
+    data <- reactive({
+        rnorm(input$num)
+    })
     output$hist <- renderPlot({
-       hist(rnorm(input$num))
+       hist(data())
+    })
+    output$stats <- renderPrint({
+        summary(data())
     })
 }
+
 
 # Run the application 
 shinyApp(ui = ui, server = server)
