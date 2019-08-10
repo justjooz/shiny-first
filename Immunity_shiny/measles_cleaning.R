@@ -8,8 +8,10 @@ measles_df <- measles_df[,-c(2,14)] # removes redundant columns
 
 # finds the mean of malaysia's 2004 and 2006 values to impute 2004 value
 measles_df[5,3] <- (measles_df[5,2] + measles_df[5,4])/2 
+View(measles_df)
 
-measles_df <- as.numeric((as.character(measles_df)))
-measles_2004 <- as.numeric(as.character(measles_df$`2004`))
+rownames(measles_df) <- measles_df[,1]
+measles_df <- measles_df[,-1]
+
 write.csv(measles_df, file = "measles_df.csv")
 write.csv(measles_2004, file = "measles_2004.csv")

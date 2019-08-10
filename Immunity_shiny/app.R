@@ -10,28 +10,41 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+immuno <- read.csv("measles_df.csv", stringsAsFactors = F, check.names = F)
+
+
 ui <- fluidPage(
-    sliderInput(inputId = "num",
-                label = "choose a number",
-                value = 25, min = 1, max = 100),
-    plotOutput("hist"),
-    verbatimTextOutput("stats")
+    titlePanel("ASEAN Immunity status"),
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("yearInput", "Year", choices = c("2004", 
+                                                         "2005", 
+                                                         "2006",
+                                                         "2007",
+                                                         "2008",
+                                                         "2009",
+                                                         "2010",
+                                                         "2011",
+                                                         "2012",
+                                                         "2013",
+                                                         "2014"))
+          
+        ),
+        mainPanel(
+            plotOutput("coolplot"),
+            br(),
+            tableOutput("results")
+        )
+    )
+        
 )
 
-# Define server logic required to draw a histogram
+?selectInput
+
 server <- function(input, output) {
-    data <- reactive({
-        rnorm(input$num)
-    })
-    output$hist <- renderPlot({
-       hist(data())
-    })
-    output$stats <- renderPrint({
-        summary(data())
+    output$coolplot <- renderPlot({
+        plot(immuno$`2004`)
     })
 }
 
-
-# Run the application 
 shinyApp(ui = ui, server = server)
